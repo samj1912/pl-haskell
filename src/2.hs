@@ -1,7 +1,8 @@
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.List (intercalate)
-
+import qualified Text.Numeral.Language.ENG as EN
+import Text.Numeral.Grammar
 -- food = [(1,"Burger",5,10), (2,"Pizza",10,20)]
 -- code, name, quantity, rate
 -- we input code and quantity
@@ -67,10 +68,17 @@ printList ((x,y,z,w,a,b):tail) = (show x) ++ " | " ++ (show y) ++ " | " ++ z ++ 
 checkInventory :: Int -> [(Int, String, Int, Double)] -> [(Int,Int,String,Double,Int,Double)] -> Int -> IO()
 checkInventory 0 newfood bought totalItems= 
     do
-      putStrLn "ALCHERINGA 2018, STALL 14: TANGO FAST FOOD CENTER\n"
+      let sum = getSum bought
+      putStrLn "---ALCHERINGA 2018, STALL 14: TANGO FAST FOOD CENTER---\n"
       putStrLn (printList bought)
-      putStrLn (replicate 50 '-')
-      putStrLn (show (getSum bought))
+      putStrLn (replicate 55 '-')
+      putStr "Total     " 
+      putStr (replicate 30 '*')
+      putStr "      "
+      putStrLn (show sum)
+      let total = round sum :: Int
+      putStr "     Rupees "
+      putStrLn (read (maybe " " show (EN.us_cardinal defaultInflection total)))
       putStrLn "THANK YOU ** HAVE A NICE DAY ** PLEASE VISIT OUR STALL AGAIN"
 
 checkInventory 1 inventory bought totalItems=
